@@ -1,1 +1,22 @@
-export class Room {}
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { HydratedDocument } from "mongoose";
+
+export type RoomDocument = HydratedDocument<Room>;
+
+@Schema()
+export class Room {
+    @Prop({ required: true })
+    _id: "string";
+
+    @Prop({ required: true })
+    number: "string";
+
+    @Prop({ required: true })
+    discription: "string";
+
+    @Prop({ required: true })
+    reserved: boolean;
+
+}
+
+export const RoomSchema = SchemaFactory.createForClass(Room);
