@@ -15,7 +15,7 @@ export class RoomsService {
   }
 
   findAll() {
-    return `This action returns all rooms`;
+    return this.roomEntity.find({})
   }
 
   findOne(id: number) {
