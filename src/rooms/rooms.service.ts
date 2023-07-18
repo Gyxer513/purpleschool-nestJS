@@ -11,7 +11,7 @@ export class RoomsService {
     @InjectModel(Room.name) private roomEntity: Model<RoomDocument>
   ) {}
   create(createRoomDto: CreateRoomDto) {
-    return 'This action adds a new room';
+    return this.roomEntity.create(createRoomDto);
   }
 
   findAll() {

@@ -5,14 +5,12 @@ export type RoomDocument = HydratedDocument<Room>;
 
 @Schema()
 export class Room {
-    @Prop({ required: true })
-    _id: "string";
 
     @Prop({ required: true })
     number: "string";
 
     @Prop({ required: true })
-    discription: "string";
+    description: "string";
 
     @Prop({ required: true })
     reserved: boolean;
