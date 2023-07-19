@@ -1,1 +1,5 @@
-export class Schedule {}
+export class Schedule {
+    roomid: string;
+
+    data: number;
+}

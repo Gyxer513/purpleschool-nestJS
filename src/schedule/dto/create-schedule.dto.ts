@@ -1,1 +1,5 @@
-export class CreateScheduleDto {}
+export class CreateScheduleDto {
+    roomid: string;
+
+    data: number;
+}
