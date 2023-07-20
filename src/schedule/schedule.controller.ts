@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { ScheduleService } from './schedule.service';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
@@ -16,10 +18,18 @@ export class ScheduleController {
   constructor(private readonly scheduleService: ScheduleService) {}
 
   @Post()
-  create(@Body() createScheduleDto: CreateScheduleDto) {
-    return this.scheduleService.create(createScheduleDto);
+  async create(@Body() createScheduleDto: CreateScheduleDto) {
+    const { roomId } = createScheduleDto;
+    const room = await this.scheduleService.findByDay(roomId);
+    if (!room) {
+      return this.scheduleService.create(createScheduleDto);
+    } else {
+      throw new HttpException(
+        `Комната с id: ${roomId} не найдена`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
-
   @Get()
   findAll() {
     return this.scheduleService.findAll();

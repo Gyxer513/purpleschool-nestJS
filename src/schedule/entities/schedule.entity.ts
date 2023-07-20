@@ -7,10 +7,10 @@ export type ScheduleDocument = HydratedDocument<Schedule>;
 export class Schedule {
 
   @Prop({ required: true })
-  roomid: string;
+  roomId: string;
 
   @Prop({ required: true })
-  data: number;
+  data: string;
 }
 
 

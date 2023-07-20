@@ -18,6 +18,10 @@ export class ScheduleService {
     return `This action returns all schedule`;
   }
 
+  findByDay(data: string) {
+    return this.scheduleEntity.findOne({ data });
+  }
+
   findOne(id: number) {
     return `This action returns a #${id} schedule`;
   }
