@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { RoomsService } from './rooms.service';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
@@ -8,27 +18,44 @@ export class RoomsController {
   constructor(private readonly roomsService: RoomsService) {}
 
   @Post()
-  create(@Body() createRoomDto: CreateRoomDto) {
-    return this.roomsService.create(createRoomDto);
+  async create(@Body() createRoomDto: CreateRoomDto) {
+    const { number } = createRoomDto;
+    const room = await this.roomsService.findByNumber(number);
+    if (!room) {
+      return this.roomsService.create(createRoomDto);
+    } else {
+      throw new HttpException(
+        `Комната с № ${number} уже существует`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.roomsService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.roomsService.findOne(+id);
+    return this.roomsService.findById(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateRoomDto: UpdateRoomDto) {
-    return this.roomsService.update(+id, updateRoomDto);
+    return this.roomsService.update(id, updateRoomDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.roomsService.remove(+id);
+  async remove(@Param('id') _id: string) {
+    const removeRoom = await this.roomsService.findById(_id);
+    if (!removeRoom) {
+      throw new HttpException(
+        `Комнаты с таким ${_id} не существует`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    return this.roomsService.remove(_id);
   }
 }

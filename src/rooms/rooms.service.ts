@@ -8,25 +8,29 @@ import { Room, RoomDocument } from './entities/room.entity';
 @Injectable()
 export class RoomsService {
   constructor(
-    @InjectModel(Room.name) private roomEntity: Model<RoomDocument>
+    @InjectModel(Room.name) private roomEntity: Model<RoomDocument>,
   ) {}
   create(createRoomDto: CreateRoomDto) {
     return this.roomEntity.create(createRoomDto);
   }
 
   findAll() {
-    return this.roomEntity.find({})
+    return this.roomEntity.find({});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} room`;
+  findByNumber(number: string) {
+    return this.roomEntity.findOne({ number });
   }
 
-  update(id: number, updateRoomDto: UpdateRoomDto) {
-    return `This action updates a #${id} room`;
+  findById(id: string) {
+    return this.roomEntity.findOne({ id });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} room`;
+  update(id: string, updateRoomDto: UpdateRoomDto) {
+    return this.roomEntity.updateOne({ id }, updateRoomDto);
+  }
+
+  remove(_id: string) {
+    return this.roomEntity.findByIdAndDelete({ _id });
   }
 }

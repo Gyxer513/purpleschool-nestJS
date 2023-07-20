@@ -5,8 +5,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Room, RoomSchema } from './entities/room.entity';
 
 @Module({
-  imports: [MongooseModule.forFeature([{name: Room.name, schema: RoomSchema}])],
+  imports: [
+    MongooseModule.forFeature([{ name: Room.name, schema: RoomSchema }]),
+  ],
   controllers: [RoomsController],
-  providers: [RoomsService]
+  providers: [RoomsService],
 })
 export class RoomsModule {}
