@@ -38,8 +38,8 @@ export class RoomsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.roomsService.findById(id);
+  async findOne(@Param('id') _id: string) {
+    return await this.roomsService.findById(_id);
   }
 
   @Patch(':id')
@@ -59,15 +59,16 @@ export class RoomsController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') _id: string) {
-    const removeRoom = await this.roomsService.findById(_id);
+  async remove(@Param('id') id: string) {
+    const removeRoom = await this.roomsService.findById(id);
     if (!removeRoom) {
-      throw new HttpException(
+      /* throw new HttpException(
         `Комнаты с таким ${_id} не существует`,
         HttpStatus.BAD_REQUEST,
-      );
+      ); */
+      return removeRoom;
     }
+    /* return this.roomsService.remove(_id); */
 
-    return this.roomsService.remove(_id);
   }
 }

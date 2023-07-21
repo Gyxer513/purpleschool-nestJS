@@ -23,7 +23,7 @@ export class RoomsService {
   }
 
   findById(id: string) {
-    return this.roomEntity.findOne({ id });
+    return this.roomEntity.findById(id);
   }
 
   update(id: string, updateRoomDto: UpdateRoomDto) {

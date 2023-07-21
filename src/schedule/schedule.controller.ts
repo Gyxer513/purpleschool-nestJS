@@ -12,16 +12,20 @@ import {
 import { ScheduleService } from './schedule.service';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
 import { UpdateScheduleDto } from './dto/update-schedule.dto';
+import { RoomsService } from 'src/rooms/rooms.service';
+
 
 @Controller('schedule')
 export class ScheduleController {
-  constructor(private readonly scheduleService: ScheduleService) {}
-
+  constructor(
+    private readonly scheduleService: ScheduleService,
+    private readonly roomsService: RoomsService,
+  ) {}
   @Post()
   async create(@Body() createScheduleDto: CreateScheduleDto) {
     const { roomId, data } = createScheduleDto;
-    const room = await this.scheduleService.findByDay(roomId);
-    if (!room) {
+    const room = await this.roomsService.findById(roomId);
+    if (room) {
       const schedule = await this.scheduleService.findByDay(data);
       if (schedule) {
         throw new HttpException(
@@ -32,10 +36,10 @@ export class ScheduleController {
         return this.scheduleService.create(createScheduleDto);
       }
     } else {
-      throw new HttpException(
+       throw new HttpException(
         `Комната с id: ${roomId} не найдена`,
         HttpStatus.NOT_FOUND,
-      );
+      ); 
     }
   }
   @Get()
