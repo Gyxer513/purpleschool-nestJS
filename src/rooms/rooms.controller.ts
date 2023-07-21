@@ -62,13 +62,12 @@ export class RoomsController {
   async remove(@Param('id') id: string) {
     const removeRoom = await this.roomsService.findById(id);
     if (!removeRoom) {
-      /* throw new HttpException(
-        `Комнаты с таким ${_id} не существует`,
+      throw new HttpException(
+        `Комнаты с таким ${id} не существует`,
         HttpStatus.BAD_REQUEST,
-      ); */
-      return removeRoom;
+      );
     }
-    /* return this.roomsService.remove(_id); */
+     return this.roomsService.remove(id); 
 
   }
 }
