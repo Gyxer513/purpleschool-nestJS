@@ -19,14 +19,22 @@ export class ScheduleController {
 
   @Post()
   async create(@Body() createScheduleDto: CreateScheduleDto) {
-    const { roomId } = createScheduleDto;
+    const { roomId, data } = createScheduleDto;
     const room = await this.scheduleService.findByDay(roomId);
     if (!room) {
-      return this.scheduleService.create(createScheduleDto);
+      const schedule = await this.scheduleService.findByDay(data);
+      if (schedule) {
+        throw new HttpException(
+          `На эту дату уже есть бронь`,
+          HttpStatus.BAD_REQUEST,
+        );
+      } else {
+        return this.scheduleService.create(createScheduleDto);
+      }
     } else {
       throw new HttpException(
         `Комната с id: ${roomId} не найдена`,
-        HttpStatus.BAD_REQUEST,
+        HttpStatus.NOT_FOUND,
       );
     }
   }
