@@ -10,8 +10,8 @@ export class RoomsService {
   constructor(
     @InjectModel(Room.name) private roomEntity: Model<RoomDocument>,
   ) {}
-  create(createRoomDto: CreateRoomDto) {
-    return this.roomEntity.create(createRoomDto);
+  create(data: CreateRoomDto) {
+    return this.roomEntity.create(data);
   }
 
   findAll() {

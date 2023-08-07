@@ -1,5 +1,5 @@
 export class CreateScheduleDto {
-  roomId: 'string';
+  roomId: string;
 
-  data: 'string';
+  date: Date;
 }

@@ -10,8 +10,8 @@ export class ScheduleService {
   constructor(
     @InjectModel(Schedule.name) private scheduleEntity: Model<ScheduleDocument>,
   ) {}
-  create(createScheduleDto: CreateScheduleDto) {
-    return this.scheduleEntity.create(createScheduleDto);
+  create(data: CreateScheduleDto) {
+    return this.scheduleEntity.create(data);
   }
 
   findAll() {

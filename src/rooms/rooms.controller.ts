@@ -12,7 +12,7 @@ import {
 import { RoomsService } from './rooms.service';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
-import { Room } from './entities/room.entity';
+
 
 @Controller('rooms')
 export class RoomsController {
@@ -45,17 +45,6 @@ export class RoomsController {
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateRoomDto: UpdateRoomDto) {
     return this.roomsService.update(id, updateRoomDto);
-  }
-
-  @Patch(':id')
-  async handleIsReservedStatus(@Param('id') id: string, @Body() updateRoomDto: UpdateRoomDto) {
-    const room = await this.roomsService.findById(id);
-    if (room.reserved) {
-      return this.roomsService.update(id, {reserved: false});
-    } else {
-      return this.roomsService.update(id, {reserved: true});
-    }
-    
   }
 
   @Delete(':id')

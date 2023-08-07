@@ -8,8 +8,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
-const app_controller_1 = require("./app.controller");
-const app_service_1 = require("./app.service");
 const schedule_module_1 = require("./schedule/schedule.module");
 const rooms_module_1 = require("./rooms/rooms.module");
 const mongoose_1 = require("@nestjs/mongoose");
@@ -20,12 +18,12 @@ exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
             config_1.ConfigModule.forRoot(),
-            mongoose_1.MongooseModule.forRoot('mongodb://localhost:27017/purpleschool'),
+            mongoose_1.MongooseModule.forRoot(process.env.MONGO_DB_LINK),
             schedule_module_1.ScheduleModule,
             rooms_module_1.RoomsModule,
         ],
-        controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService],
+        controllers: [],
+        providers: [],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

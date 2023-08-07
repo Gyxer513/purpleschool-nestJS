@@ -1,7 +1,7 @@
 export class CreateRoomDto {
-  number: 'string';
+  number: string;
 
-  description: 'string';
+  description: string;
 
   reserved: boolean;
 }
