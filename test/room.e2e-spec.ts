@@ -52,7 +52,6 @@ describe('AppController (e2e)', () => {
   });
 
   afterAll(() => {
-    jest.setTimeout();
     disconnect();
   });
 });
