@@ -32,14 +32,16 @@ export class RoomsController {
     }
   }
 
-  @Get()
-  async findAll() {
-    return this.roomsService.findAll();
-  }
 
   @Get(':id')
   async findOne(@Param('id') _id: string) {
     return await this.roomsService.findById(_id);
+  }
+
+  @Get()
+  async findOneByNumber(@Body() createRoomDto: CreateRoomDto) {
+    const { number } = createRoomDto;
+    return await this.roomsService.findByNumber(number);
   }
 
   @Patch(':id')
