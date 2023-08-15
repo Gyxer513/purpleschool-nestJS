@@ -3,16 +3,15 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   HttpException,
   HttpStatus,
-  ParseIntPipe,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ScheduleService } from './schedule.service';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
-import { UpdateScheduleDto } from './dto/update-schedule.dto';
 import { RoomsService } from '../rooms/rooms.service';
 
 
@@ -22,9 +21,11 @@ export class ScheduleController {
     private readonly scheduleService: ScheduleService,
     private readonly roomsService: RoomsService,
   ) {}
+
+  @UsePipes(new ValidationPipe())
   @Post()
   async create(@Body() createScheduleDto: CreateScheduleDto) {
-    const { roomId, date } = createScheduleDto;
+    const { roomId } = createScheduleDto;
     const room = await this.roomsService.findById(roomId);
     if (room) {
       return this.scheduleService.create(createScheduleDto);
