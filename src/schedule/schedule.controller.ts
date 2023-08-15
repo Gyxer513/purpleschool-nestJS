@@ -35,26 +35,16 @@ export class ScheduleController {
       ); 
     }
   }
-  @Get()
-  findAll() {
-    return this.scheduleService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id) {
-    return this.scheduleService.findOne(id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id', ParseIntPipe) id,
-    @Body() updateScheduleDto: UpdateScheduleDto,
-  ) {
-    return this.scheduleService.update(id, updateScheduleDto);
-  }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.scheduleService.remove(+id);
+  async remove(@Param('id') id: string) {
+    const removeRoom = await this.scheduleService.remove(id);
+    if (!removeRoom) {
+      throw new HttpException(
+        `Комнаты с таким ${id} не существует`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+     return this.scheduleService.remove(id); 
   }
 }

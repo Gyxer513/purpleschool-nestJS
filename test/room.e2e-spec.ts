@@ -4,15 +4,17 @@ import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { CreateRoomDto } from 'src/rooms/dto/create-room.dto';
 import { disconnect } from 'mongoose';
+import { CreateScheduleDto } from 'src/schedule/dto/create-schedule.dto';
 
-const testDto: CreateRoomDto = {
+const testRoomDto: CreateRoomDto = {
   number: '9999',
   description: 'TEST ROOM',
 };
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
-  let createdId: string;
+  let createdRoomId: string;
+  let createdSheduleId: string;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -26,28 +28,49 @@ describe('AppController (e2e)', () => {
   it('/rooms (POST)', async () => {
     await request(app.getHttpServer())
       .post('/rooms')
-      .send(testDto)
+      .send(testRoomDto)
       .expect(201)
       .then(({ body }: request.Response) => {
-        createdId = body._id;
-        expect(createdId).toBeDefined();
+        createdRoomId = body._id;
+        expect(createdRoomId).toBeDefined();
+      });
+  });
+
+  it('/schedule (POST)', async () => {
+    await request(app.getHttpServer())
+      .post('/schedule')
+      .send({
+        roomId: createdRoomId,
+        date: '18.02.2003',
+      })
+      .expect(201)
+      .then(({ body }: request.Response) => {
+        createdSheduleId = body._id;
+        expect(createdSheduleId).toBeDefined();
       });
   });
 
   it('/rooms (GET)', async () => {
     await request(app.getHttpServer())
       .get('/rooms')
-      .send({ number: testDto.number })
+      .send({ number: testRoomDto.number })
       .expect(200)
       .then(({ body }: request.Response) => {
-        expect(body.number).toBe(testDto.number);
+        expect(body.number).toBe(testRoomDto.number);
       });
+  });
+
+  it('/schedule/:id (DELETE)', () => {
+    return request(app.getHttpServer())
+      .delete('/schedule/' + createdSheduleId)
+      .send(testRoomDto)
+      .expect(200);
   });
 
   it('/rooms/:id (DELETE)', () => {
     return request(app.getHttpServer())
-      .delete('/rooms/' + createdId)
-      .send(testDto)
+      .delete('/rooms/' + createdRoomId)
+      .send(testRoomDto)
       .expect(200);
   });
 

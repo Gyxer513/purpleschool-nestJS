@@ -59,6 +59,5 @@ export class RoomsController {
       );
     }
      return this.roomsService.remove(id); 
-
   }
 }

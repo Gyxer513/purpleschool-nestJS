@@ -14,23 +14,13 @@ export class ScheduleService {
     return this.scheduleEntity.create(data);
   }
 
-  findAll() {
-    return `This action returns all schedule`;
-  }
-
   findByDay(data: string) {
     return this.scheduleEntity.findOne({ data });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} schedule`;
+
+  remove(_id: string) {
+    return this.scheduleEntity.findByIdAndDelete({ _id });
   }
 
-  update(id: number, updateScheduleDto: UpdateScheduleDto) {
-    return `This action updates a #${id} schedule`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} schedule`;
-  }
 }
