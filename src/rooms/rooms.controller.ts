@@ -44,7 +44,7 @@ export class RoomsController {
   @Get()
   async findOneByNumber(@Body() createRoomDto: CreateRoomDto) {
     const { number } = createRoomDto;
-    return await this.roomsService.findByNumber(number);
+    return this.roomsService.findByNumber(number);
   }
 
   @Patch(':id')
