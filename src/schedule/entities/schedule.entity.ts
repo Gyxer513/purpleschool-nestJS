@@ -10,7 +10,7 @@ export class Schedule {
   roomId: string;
 
   @Prop({ required: true })
-  data: string;
+  date: string;
 }
 
 

@@ -3,16 +3,15 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   HttpException,
   HttpStatus,
-  ParseIntPipe,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ScheduleService } from './schedule.service';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
-import { UpdateScheduleDto } from './dto/update-schedule.dto';
 import { RoomsService } from '../rooms/rooms.service';
 
 
@@ -22,9 +21,11 @@ export class ScheduleController {
     private readonly scheduleService: ScheduleService,
     private readonly roomsService: RoomsService,
   ) {}
+
+  @UsePipes(new ValidationPipe())
   @Post()
   async create(@Body() createScheduleDto: CreateScheduleDto) {
-    const { roomId, date } = createScheduleDto;
+    const { roomId } = createScheduleDto;
     const room = await this.roomsService.findById(roomId);
     if (room) {
       return this.scheduleService.create(createScheduleDto);
@@ -35,26 +36,16 @@ export class ScheduleController {
       ); 
     }
   }
-  @Get()
-  findAll() {
-    return this.scheduleService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id) {
-    return this.scheduleService.findOne(id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id', ParseIntPipe) id,
-    @Body() updateScheduleDto: UpdateScheduleDto,
-  ) {
-    return this.scheduleService.update(id, updateScheduleDto);
-  }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.scheduleService.remove(+id);
+  async remove(@Param('id') id: string) {
+    const removeRoom = await this.scheduleService.remove(id);
+    if (!removeRoom) {
+      throw new HttpException(
+        `Комнаты с таким ${id} не существует`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+     return this.scheduleService.remove(id); 
   }
 }

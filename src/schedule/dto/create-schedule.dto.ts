@@ -1,5 +1,8 @@
+import { IsString } from "class-validator";
 export class CreateScheduleDto {
+  @IsString()
   roomId: string;
-
-  date: Date;
+  
+  @IsString()
+  date: string;
 }

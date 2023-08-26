@@ -11,8 +11,6 @@ export class Room {
   @Prop({ required: true })
   description: 'string';
 
-  @Prop({ required: true })
-  reserved: boolean;
 }
 
 export const RoomSchema = SchemaFactory.createForClass(Room);

@@ -8,6 +8,8 @@ import {
   Delete,
   HttpException,
   HttpStatus,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { RoomsService } from './rooms.service';
 import { CreateRoomDto } from './dto/create-room.dto';
@@ -18,6 +20,7 @@ import { UpdateRoomDto } from './dto/update-room.dto';
 export class RoomsController {
   constructor(private readonly roomsService: RoomsService) {}
 
+  @UsePipes(new ValidationPipe())
   @Post()
   async create(@Body() createRoomDto: CreateRoomDto) {
     const { number } = createRoomDto;
@@ -32,14 +35,16 @@ export class RoomsController {
     }
   }
 
-  @Get()
-  async findAll() {
-    return this.roomsService.findAll();
-  }
 
   @Get(':id')
   async findOne(@Param('id') _id: string) {
     return await this.roomsService.findById(_id);
+  }
+
+  @Get()
+  async findOneByNumber(@Body() createRoomDto: CreateRoomDto) {
+    const { number } = createRoomDto;
+    return this.roomsService.findByNumber(number);
   }
 
   @Patch(':id')
@@ -57,6 +62,5 @@ export class RoomsController {
       );
     }
      return this.roomsService.remove(id); 
-
   }
 }
