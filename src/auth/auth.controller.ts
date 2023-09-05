@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Post,
@@ -14,5 +15,10 @@ export class AuthController {
 
   @UsePipes(new ValidationPipe())
   @Post('register')
-  async register(@Body() dto: AuthDto) {}
+  async register(@Body() dto: AuthDto) {
+    const oldUser = await this.authService.findUser(dto.login);
+    if (oldUser) {
+      throw new BadRequestException();
+    }
+  }
 }
