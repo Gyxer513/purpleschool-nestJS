@@ -3,9 +3,10 @@ import { ScheduleModule } from './schedule/schedule.module';
 import { RoomsModule } from './rooms/rooms.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
-import { AuthModule } from './auth/Auth.module';
-import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
+
+
+
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { AuthModule } from './auth/auth.module';
     RoomsModule,
     AuthModule,
   ],
-  controllers: [AuthController],
+  controllers: [],
   providers: [],
 })
 export class AppModule {}
