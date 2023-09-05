@@ -20,5 +20,6 @@ export class AuthController {
     if (oldUser) {
       throw new BadRequestException();
     }
+    return this.authService.createUser(dto);
   }
 }
