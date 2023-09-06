@@ -95,8 +95,16 @@ export class RoomsController {
     return this.roomsService.remove(id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('stat')
-  async showStatstic(@Body() dto: CreateRoomDto) {
+  async showStatstic(@Body() dto: CreateRoomDto, @UserRole() email: string) {
+    const role = (await this.userService.findUser(email)).role;
+    if (role != 'ADMIN') {
+      throw new HttpException(
+        `это действие доступно только администратору`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     return this.roomsService.agregateRooms(dto)
   }
 }
