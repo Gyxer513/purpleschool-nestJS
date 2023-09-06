@@ -9,7 +9,7 @@ import { Room, RoomDocument } from './entities/room.entity';
 export class RoomsService {
   constructor(
     @InjectModel(Room.name) private roomEntity: Model<RoomDocument>,
-  ) {}
+  ) { }
   create(data: CreateRoomDto) {
     return this.roomEntity.create(data);
   }
@@ -32,5 +32,30 @@ export class RoomsService {
 
   remove(_id: string) {
     return this.roomEntity.findByIdAndDelete({ _id });
+  }
+
+  agregateRooms(dto: CreateRoomDto) {
+    return this.roomEntity.aggregate([
+      {
+        $match: { number: dto.number }
+      }, 
+      {
+        $sort: {
+          _id: 1
+        }
+      }, 
+      {
+        $limit: 10
+      }, 
+      {
+        $lookup: {
+          from: 'Scheadule',
+          localField: '_id',
+          foreignField: 'productId',
+          as: 'scedule'
+        }
+      },
+
+    ])
   }
 }

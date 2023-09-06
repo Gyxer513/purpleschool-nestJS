@@ -6,11 +6,10 @@ export type RoomDocument = HydratedDocument<Room>;
 @Schema({ timestamps: true })
 export class Room {
   @Prop({ required: true })
-  number: 'string';
+  number: string;
 
   @Prop({ required: true })
-  description: 'string';
-
+  description: string;
 }
 
 export const RoomSchema = SchemaFactory.createForClass(Room);

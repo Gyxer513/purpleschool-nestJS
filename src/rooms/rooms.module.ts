@@ -3,10 +3,11 @@ import { RoomsService } from './rooms.service';
 import { RoomsController } from './rooms.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Room, RoomSchema } from './entities/room.entity';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Room.name, schema: RoomSchema }]),
+    MongooseModule.forFeature([{ name: Room.name, schema: RoomSchema }]), UserModule
   ],
   controllers: [RoomsController],
   providers: [RoomsService],

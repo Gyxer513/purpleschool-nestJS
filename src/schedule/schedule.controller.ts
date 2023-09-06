@@ -24,7 +24,7 @@ export class ScheduleController {
     private readonly scheduleService: ScheduleService,
     private readonly roomsService: RoomsService,
     private readonly userService: UserService,
-  ) {}
+  ) { }
 
   @UsePipes(new ValidationPipe())
   @Post()
