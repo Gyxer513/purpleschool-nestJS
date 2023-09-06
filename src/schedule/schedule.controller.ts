@@ -15,14 +15,16 @@ import { ScheduleService } from './schedule.service';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
 import { RoomsService } from '../rooms/rooms.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
-
+import { UserRole } from 'src/decorators/user-email.decorator';
+import { UserService } from 'src/user/user.service';
 
 @Controller('schedule')
 export class ScheduleController {
   constructor(
     private readonly scheduleService: ScheduleService,
     private readonly roomsService: RoomsService,
-  ) { }
+    private readonly userService: UserService,
+  ) {}
 
   @UsePipes(new ValidationPipe())
   @Post()
@@ -41,7 +43,15 @@ export class ScheduleController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string, @UserRole() email: string) {
+    const role = (await this.userService.findUser(email)).role;
+    if (role != 'ADMIN') {
+      throw new HttpException(
+        `только администарторы могут удалять комнааты`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     const removeRoom = await this.scheduleService.remove(id);
     if (!removeRoom) {
       throw new HttpException(

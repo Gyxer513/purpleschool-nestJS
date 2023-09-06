@@ -8,28 +8,19 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthService } from './auth.servise';
-import { AuthDto } from './dto/auth.dto';
+import { UserDto } from 'src/user/dto/user.dto';
+
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) { }
 
   @UsePipes(new ValidationPipe())
-  @Post('register')
-  async register(@Body() dto: AuthDto) {
-    const oldUser = await this.authService.findUser(dto.login);
-    if (oldUser) {
-      throw new BadRequestException();
-    }
-    return this.authService.createUser(dto);
-  }
-
-  @UsePipes(new ValidationPipe())
   @HttpCode(200)
   @Post('login')
-  async login(@Body() dto: AuthDto) {
+  async login(@Body() dto: UserDto) {
     const { login, password } = dto;
     const { email } = await this.authService.validateUser(login, password);
-    return this.authService.login(email);
+    return this.authService.login(email); 
   }
 }
