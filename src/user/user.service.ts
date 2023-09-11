@@ -8,7 +8,7 @@ import { genSalt, hash } from 'bcryptjs';
 @Injectable()
 export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
-  
+
   async createUser(dto: UserDto) {
     const salt = await genSalt(10);
     const newUser = new this.userModel({
@@ -19,7 +19,11 @@ export class UserService {
     return newUser.save();
   }
 
-  async findUser(email: string) {
+  async findUser(email: any) {
     return this.userModel.findOne({ email }).exec();
+  }
+
+  async findUserById(id: string) {
+    return this.userModel.findById(id);
   }
 }

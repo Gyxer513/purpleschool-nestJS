@@ -12,13 +12,16 @@ import {
   ValidationPipe,
   UseGuards,
   Options,
+  SetMetadata,
 } from '@nestjs/common';
 import { RoomsService } from './rooms.service';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { UserService } from 'src/user/user.service';
-import { UserRole } from 'src/decorators/user-email.decorator';
+import { UserEmail } from 'src/decorators/user-email.decorator';
+import { Role } from 'src/user/entities/role.enum';
+import { RolesGuard } from 'src/roles/roles.guard';
 
 
 
@@ -65,9 +68,9 @@ export class RoomsController {
   }
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateRoomDto: UpdateRoomDto, @UserRole() email: string) {
+  async update(@Param('id') id: string, @Body() updateRoomDto: UpdateRoomDto, @UserEmail() email: string) {
     const role = (await this.userService.findUser(email)).role;
-    if (role != 'ADMIN') {
+    if (role !== Role.ADMIN) {
       throw new HttpException(
         `только администарторы могут удалять комнааты`,
         HttpStatus.BAD_REQUEST,
@@ -77,10 +80,10 @@ export class RoomsController {
   }
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  async remove(@Param('id') id: string, @UserRole() email: string) {
+  async remove(@Param('id') id: string, @UserEmail() email: string) {
     const removeRoom = await this.roomsService.findById(id);
     const role = (await this.userService.findUser(email)).role;
-    if (role != 'ADMIN') {
+    if (role !== Role.ADMIN) {
       throw new HttpException(
         `только администарторы могут удалять комнааты`,
         HttpStatus.BAD_REQUEST,
@@ -96,15 +99,9 @@ export class RoomsController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @UseGuards(RolesGuard)
   @Get('stat')
-  async showStatstic(@Body() dto: CreateRoomDto, @UserRole() email: string) {
-    const role = (await this.userService.findUser(email)).role;
-    if (role != 'ADMIN') {
-      throw new HttpException(
-        `это действие доступно только администратору`,
-        HttpStatus.BAD_REQUEST,
-      );
-    }
+  async showStatstic(@Body() dto: CreateRoomDto, @UserEmail() email: string) {
     return this.roomsService.agregateRooms(dto)
   }
 }
