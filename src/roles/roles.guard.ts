@@ -25,7 +25,7 @@ export class RolesGuard implements CanActivate {
     let userData: User = await this.userService.findUser(user);
     if (userData?.role !== Role.ADMIN) {
       throw new HttpException(
-        `только администарторы могут удалять комнааты`,
+        `это действие доступно только администарторам`,
         HttpStatus.BAD_REQUEST,
       );
     }
