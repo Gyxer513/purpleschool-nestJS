@@ -42,8 +42,8 @@ export class ScheduleController {
     }
   }
 
-  @UseGuards(JwtAuthGuard)
   @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
     const removeRoom = await this.scheduleService.remove(id);

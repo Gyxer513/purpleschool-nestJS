@@ -7,18 +7,28 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
-import { UserEmail } from 'src/decorators/user-email.decorator';
+
+import { ROLES_KEY } from '../decorators/roles.decorator';
 import { Role } from 'src/user/entities/role.enum';
+import { User } from 'src/user/entities/user.model';
 import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-  constructor(private readonly userService: UserService, private reflector: Reflector) {}
+  constructor(
+    private readonly userService: UserService,
+  ) {}
 
-  canActivate(content: ExecutionContext): boolean {
-    const request = content.switchToHttp().getRequest();
-    console.log(request.user);
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const { user }: { user: User } = await context.switchToHttp().getRequest();
 
+    let userData: User = await this.userService.findUser(user);
+    if (userData?.role !== Role.ADMIN) {
+      throw new HttpException(
+        `только администарторы могут удалять комнааты`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     return true;
   }
 }

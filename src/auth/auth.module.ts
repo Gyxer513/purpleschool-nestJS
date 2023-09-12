@@ -24,6 +24,6 @@ import { User, UserSchema } from 'src/user/entities/user.model';
     PassportModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, UserService],
+  providers: [AuthService, JwtStrategy],
 })
 export class AuthModule {}

@@ -47,17 +47,10 @@ export class RoomsController {
     }
   }
 
-
-/*   @Get(':id')
-  async findOne(@Param('id') _id: string) {
-    return await this.roomsService.findById(_id);
-  } */
-
   @Get()
   async findOneByNumber(@Body() createRoomDto: CreateRoomDto) {
     const { number } = createRoomDto;
     const room = await this.roomsService.findByNumber(number);
-    console.log(room)
     if (!room) {
       throw new HttpException(
         `Комната с  №${number} не найдена`,
@@ -66,6 +59,8 @@ export class RoomsController {
     }
     return room;
   }
+
+  @UseGuards(RolesGuard)
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateRoomDto: UpdateRoomDto, @UserEmail() email: string) {
@@ -78,17 +73,12 @@ export class RoomsController {
     }
     return this.roomsService.update(id, updateRoomDto);
   }
+
+  @UseGuards(RolesGuard)
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string, @UserEmail() email: string) {
     const removeRoom = await this.roomsService.findById(id);
-    const role = (await this.userService.findUser(email)).role;
-    if (role !== Role.ADMIN) {
-      throw new HttpException(
-        `только администарторы могут удалять комнааты`,
-        HttpStatus.BAD_REQUEST,
-      );
-    }
     if (!removeRoom) {
       throw new HttpException(
         `Комнаты с таким ${id} не существует`,
@@ -98,8 +88,8 @@ export class RoomsController {
     return this.roomsService.remove(id);
   }
 
-  @UseGuards(JwtAuthGuard)
   @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
   @Get('stat')
   async showStatstic(@Body() dto: CreateRoomDto, @UserEmail() email: string) {
     return this.roomsService.agregateRooms(dto)
