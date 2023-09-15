@@ -9,12 +9,12 @@ import { genSalt, hash } from 'bcryptjs';
 export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-  async createUser(dto: UserDto) {
+  async createUser(data: UserDto) {
     const salt = await genSalt(10);
     const newUser = new this.userModel({
-      email: dto.login,
-      passwordHash: await hash(dto.password, salt),
-      role: dto.role,
+      email: data.login,
+      passwordHash: await hash(data.password, salt),
+      role: data.role,
     });
     return newUser.save();
   }
