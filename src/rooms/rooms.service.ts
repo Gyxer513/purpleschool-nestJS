@@ -34,10 +34,10 @@ export class RoomsService {
     return this.roomEntity.findByIdAndDelete({ _id });
   }
 
-  agregateRooms(dto: CreateRoomDto) {
+  agregateRooms(roomData: Room) {
     return this.roomEntity.aggregate([
       {
-        $match: { number: dto.number }
+        $match: { number: roomData.number }
       },
       {
         $sort: {
@@ -50,7 +50,7 @@ export class RoomsService {
       {
         $lookup: {
           from: 'schedules',
-          localField: dto.number,
+          localField: roomData.number,
           foreignField: 'productId',
           as: 'schedule'
         }
