@@ -9,17 +9,22 @@ import {
   HttpStatus,
   UsePipes,
   ValidationPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { ScheduleService } from './schedule.service';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
 import { RoomsService } from '../rooms/rooms.service';
-
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+import { UserEmail } from 'src/decorators/user-email.decorator';
+import { UserService } from 'src/user/user.service';
+import { RolesGuard } from 'src/roles/roles.guard';
 
 @Controller('schedule')
 export class ScheduleController {
   constructor(
     private readonly scheduleService: ScheduleService,
     private readonly roomsService: RoomsService,
+    private readonly userService: UserService,
   ) {}
 
   @UsePipes(new ValidationPipe())
@@ -30,13 +35,15 @@ export class ScheduleController {
     if (room) {
       return this.scheduleService.create(createScheduleDto);
     } else {
-       throw new HttpException(
+      throw new HttpException(
         `Комната с id: ${roomId} не найдена`,
         HttpStatus.NOT_FOUND,
-      ); 
+      );
     }
   }
 
+  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
     const removeRoom = await this.scheduleService.remove(id);
@@ -46,6 +53,6 @@ export class ScheduleController {
         HttpStatus.BAD_REQUEST,
       );
     }
-     return this.scheduleService.remove(id); 
+    return this.scheduleService.remove(id);
   }
 }

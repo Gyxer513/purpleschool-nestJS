@@ -12,6 +12,8 @@ const schedule_module_1 = require("./schedule/schedule.module");
 const rooms_module_1 = require("./rooms/rooms.module");
 const mongoose_1 = require("@nestjs/mongoose");
 const config_1 = require("@nestjs/config");
+const auth_module_1 = require("./auth/auth.module");
+const user_module_1 = require("./user/user.module");
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
@@ -21,6 +23,8 @@ exports.AppModule = AppModule = __decorate([
             mongoose_1.MongooseModule.forRoot(process.env.MONGO_DB_LINK),
             schedule_module_1.ScheduleModule,
             rooms_module_1.RoomsModule,
+            auth_module_1.AuthModule,
+            user_module_1.UserModule,
         ],
         controllers: [],
         providers: [],
