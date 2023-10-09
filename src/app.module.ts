@@ -5,18 +5,19 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
-
+import { FilesModule } from './files/files.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(
-      'mongodb://root:password@db/purpleschool?authSource=admin'
+      `mongodb://localhost:27017/purpleschool`,
     ),
     ScheduleModule,
     RoomsModule,
     AuthModule,
     UserModule,
+    FilesModule,
   ],
   controllers: [],
   providers: [],

@@ -11,8 +11,6 @@ import {
   UsePipes,
   ValidationPipe,
   UseGuards,
-  Options,
-  SetMetadata,
 } from '@nestjs/common';
 import { RoomsService } from './rooms.service';
 import { CreateRoomDto } from './dto/create-room.dto';
@@ -32,7 +30,7 @@ export class RoomsController {
 
   @UsePipes(new ValidationPipe())
   @Post()
-
+  @UseGuards()
   @UseGuards(JwtAuthGuard)
   async create(@Body() createRoomDto: CreateRoomDto) {
     const { number } = createRoomDto;

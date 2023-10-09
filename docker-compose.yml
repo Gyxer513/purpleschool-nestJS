@@ -26,6 +26,4 @@ services:
     ports:
       - 8082:8081
     environment:
-      ME_CONFIG_MONGODB_AUTH_USERNAME: admin
-      ME_CONFIG_MONGODB_AUTH_PASSWORD: password
       ME_CONFIG_MONGODB_URL: mongodb://root:password@db:27017
