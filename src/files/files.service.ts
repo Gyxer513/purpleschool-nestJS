@@ -11,10 +11,8 @@ export class FilesService {
     const uploadFolder = `${path}`;
     await ensureDir(uploadFolder);
     const res: FileElementResponse[] = [];
-    console.log(files);
-    
     for (const file of files) {
-      await writeFile(`${uploadFolder}/${file.originalname}`, file.buffer);
+      await writeFile(`${uploadFolder}/uploads/${file.originalname}`, file.buffer);
       res.push({
         url: `${dateFolder}/${file.originalname}`,
         name: file.originalname,

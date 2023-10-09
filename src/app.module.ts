@@ -11,7 +11,7 @@ import { FilesModule } from './files/files.module';
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(
-      `mongodb://localhost:27017/purpleschool`,
+      'mongodb://localhost:27017/purpleschool',
     ),
     ScheduleModule,
     RoomsModule,

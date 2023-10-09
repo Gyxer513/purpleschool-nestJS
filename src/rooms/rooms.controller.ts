@@ -30,7 +30,7 @@ export class RoomsController {
 
   @UsePipes(new ValidationPipe())
   @Post()
-  @UseGuards()
+  @UseGuards(RolesGuard)
   @UseGuards(JwtAuthGuard)
   async create(@Body() createRoomDto: CreateRoomDto) {
     const { number } = createRoomDto;

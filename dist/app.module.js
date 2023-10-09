@@ -21,7 +21,7 @@ exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
             config_1.ConfigModule.forRoot(),
-            mongoose_1.MongooseModule.forRoot(`mongodb://localhost:27017/purpleschool`),
+            mongoose_1.MongooseModule.forRoot('mongodb://localhost:27017/purpleschool'),
             schedule_module_1.ScheduleModule,
             rooms_module_1.RoomsModule,
             auth_module_1.AuthModule,
