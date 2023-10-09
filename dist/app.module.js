@@ -20,7 +20,7 @@ exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
             config_1.ConfigModule.forRoot(),
-            mongoose_1.MongooseModule.forRoot(process.env.MONGO_DB_LINK),
+            mongoose_1.MongooseModule.forRoot('mongodb://root:password@db/alsiTech?authSource=admin'),
             schedule_module_1.ScheduleModule,
             rooms_module_1.RoomsModule,
             auth_module_1.AuthModule,
