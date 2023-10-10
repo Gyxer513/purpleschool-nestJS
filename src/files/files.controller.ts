@@ -18,18 +18,20 @@ export class FilesController {
   constructor(private readonly filesService: FilesService) {}
   @Post('upload')
   @HttpCode(200)
+  @UseGuards(RolesGuard)
+  @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('files'))
   async uploadedFile(
     @UploadedFile() file: Express.Multer.File,
   ): Promise<FileElementResponse[]> {
-    const saveArray: MFile[] = [new MFile(file)];  
-      const buffer = await this.filesService.convertToWepP(file.buffer);
-      saveArray.push(
-        new MFile({
-          originalname: `${file.originalname.split('.')[0]}.webp`,
-          buffer,
-        }),
-      );
+    const saveArray: MFile[] = [new MFile(file)];
+    const buffer = await this.filesService.convertToWepP(file.buffer);
+    saveArray.push(
+      new MFile({
+        originalname: `${file.originalname.split('.')[0]}.webp`,
+        buffer,
+      }),
+    );
     return this.filesService.saveFile(saveArray);
   }
 }
