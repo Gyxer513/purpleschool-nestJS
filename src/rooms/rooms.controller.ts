@@ -30,8 +30,7 @@ export class RoomsController {
 
   @UsePipes(new ValidationPipe())
   @Post()
-  @UseGuards(RolesGuard)
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(RolesGuard, JwtAuthGuard)
   async create(@Body() createRoomDto: CreateRoomDto) {
     const { number } = createRoomDto;
     const room = await this.roomsService.findByNumber(number);
@@ -58,8 +57,7 @@ export class RoomsController {
     return room;
   }
 
-  @UseGuards(RolesGuard)
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(RolesGuard, JwtAuthGuard)
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateRoomDto: UpdateRoomDto, @UserEmail() email: string) {
     const role = (await this.userService.findUser(email)).role;
@@ -72,8 +70,7 @@ export class RoomsController {
     return this.roomsService.update(id, updateRoomDto);
   }
 
-  @UseGuards(RolesGuard)
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(RolesGuard, JwtAuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string, @UserEmail() email: string) {
     const removeRoom = await this.roomsService.findById(id);
@@ -86,8 +83,7 @@ export class RoomsController {
     return this.roomsService.remove(id);
   }
 
-  @UseGuards(RolesGuard)
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(RolesGuard, JwtAuthGuard)
   @Get('stat')
   async showStatstic(@Body() dto: CreateRoomDto, @UserEmail() email: string) {
     return this.roomsService.agregateRooms(dto)

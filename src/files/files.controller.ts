@@ -18,8 +18,7 @@ export class FilesController {
   constructor(private readonly filesService: FilesService) {}
   @Post('upload')
   @HttpCode(200)
-  @UseGuards(RolesGuard)
-  @UseGuards(JwtAuthGuard)
+/*   @UseGuards(RolesGuard, JwtAuthGuard) */
   @UseInterceptors(FileInterceptor('files'))
   async uploadedFile(
     @UploadedFile() file: Express.Multer.File,

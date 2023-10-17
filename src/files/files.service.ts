@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { FileElementResponse } from './dto/response-element.dto';
-import { format } from 'date-fns';
 import { path } from 'app-root-path';
 import { ensureDir, writeFile } from 'fs-extra';
 import * as sharp from 'sharp';
@@ -9,7 +8,6 @@ import { MFile } from './mfile.class';
 @Injectable()
 export class FilesService {
   async saveFile(files: MFile[]): Promise<FileElementResponse[]> {
-    const dateFolder = format(new Date(), 'yyyy-MM-dd');
     const uploadFolder = `${path}`;
     await ensureDir(uploadFolder);
     const res: FileElementResponse[] = [];

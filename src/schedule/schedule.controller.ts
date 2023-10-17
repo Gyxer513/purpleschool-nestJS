@@ -15,7 +15,6 @@ import { ScheduleService } from './schedule.service';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
 import { RoomsService } from '../rooms/rooms.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
-import { UserEmail } from 'src/decorators/user-email.decorator';
 import { UserService } from 'src/user/user.service';
 import { RolesGuard } from 'src/roles/roles.guard';
 
@@ -42,8 +41,7 @@ export class ScheduleController {
     }
   }
 
-  @UseGuards(RolesGuard)
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(RolesGuard, JwtAuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: string) {
     const removeRoom = await this.scheduleService.remove(id);
