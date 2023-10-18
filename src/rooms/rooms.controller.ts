@@ -20,13 +20,15 @@ import { UserService } from 'src/user/user.service';
 import { UserEmail } from 'src/decorators/user-email.decorator';
 import { Role } from 'src/user/entities/role.enum';
 import { RolesGuard } from 'src/roles/roles.guard';
-
-
+import { FilesService } from 'src/files/files.service';
 
 @Controller('rooms')
 export class RoomsController {
-  constructor(private readonly roomsService: RoomsService,
-    private readonly userService: UserService) { }
+  constructor(
+    private readonly roomsService: RoomsService,
+    private readonly userService: UserService,
+    private readonly filesService: FilesService,
+  ) {}
 
   @UsePipes(new ValidationPipe())
   @Post()
@@ -59,7 +61,11 @@ export class RoomsController {
 
   @UseGuards(RolesGuard, JwtAuthGuard)
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateRoomDto: UpdateRoomDto, @UserEmail() email: string) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateRoomDto: UpdateRoomDto,
+    @UserEmail() email: string,
+  ) {
     const role = (await this.userService.findUser(email)).role;
     if (role !== Role.ADMIN) {
       throw new HttpException(
@@ -67,6 +73,8 @@ export class RoomsController {
         HttpStatus.BAD_REQUEST,
       );
     }
+    const file = await this.filesService.findFileByName(updateRoomDto.image);
+    updateRoomDto.image = `/static/${file.name}`;
     return this.roomsService.update(id, updateRoomDto);
   }
 
@@ -86,6 +94,6 @@ export class RoomsController {
   @UseGuards(RolesGuard, JwtAuthGuard)
   @Get('stat')
   async showStatstic(@Body() dto: CreateRoomDto, @UserEmail() email: string) {
-    return this.roomsService.agregateRooms(dto)
+    return this.roomsService.agregateRooms(dto);
   }
 }

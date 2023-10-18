@@ -23,7 +23,6 @@ export class ScheduleController {
   constructor(
     private readonly scheduleService: ScheduleService,
     private readonly roomsService: RoomsService,
-    private readonly userService: UserService,
   ) {}
 
   @UsePipes(new ValidationPipe())

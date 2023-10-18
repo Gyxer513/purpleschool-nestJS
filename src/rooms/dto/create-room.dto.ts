@@ -7,5 +7,8 @@ export class CreateRoomDto {
   @IsString()
   @IsOptional()
   description: string;
-  
+
+  @IsString()
+  @IsOptional()
+  image: string;
 }

@@ -6,6 +6,8 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { FilesModule } from './files/files.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { path } from 'app-root-path';
 
 @Module({
   imports: [
@@ -18,6 +20,10 @@ import { FilesModule } from './files/files.module';
     AuthModule,
     UserModule,
     FilesModule,
+    ServeStaticModule.forRoot({
+      rootPath: `${path}/uploads`,
+      serveRoot: '/static'
+    }),
   ],
   controllers: [],
   providers: [],

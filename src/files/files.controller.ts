@@ -18,7 +18,7 @@ export class FilesController {
   constructor(private readonly filesService: FilesService) {}
   @Post('upload')
   @HttpCode(200)
-/*   @UseGuards(RolesGuard, JwtAuthGuard) */
+  /*   @UseGuards(RolesGuard, JwtAuthGuard) */
   @UseInterceptors(FileInterceptor('files'))
   async uploadedFile(
     @UploadedFile() file: Express.Multer.File,
@@ -31,6 +31,14 @@ export class FilesController {
         buffer,
       }),
     );
-    return this.filesService.saveFile(saveArray);
+    /* this.filesService.create(saveArray) */
+    const res = await this.filesService.saveFile(saveArray);
+    console.log(res[1]);
+    const {url, name} = res[1];
+    await this.filesService.create({
+      name: name,
+      url: url
+    })
+    return res;
   }
 }
