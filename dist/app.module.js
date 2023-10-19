@@ -14,17 +14,25 @@ const mongoose_1 = require("@nestjs/mongoose");
 const config_1 = require("@nestjs/config");
 const auth_module_1 = require("./auth/auth.module");
 const user_module_1 = require("./user/user.module");
+const files_module_1 = require("./files/files.module");
+const serve_static_1 = require("@nestjs/serve-static");
+const app_root_path_1 = require("app-root-path");
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
             config_1.ConfigModule.forRoot(),
-            mongoose_1.MongooseModule.forRoot(process.env.MONGO_DB_LINK),
+            mongoose_1.MongooseModule.forRoot('mongodb://localhost:27017/purpleschool'),
             schedule_module_1.ScheduleModule,
             rooms_module_1.RoomsModule,
             auth_module_1.AuthModule,
             user_module_1.UserModule,
+            files_module_1.FilesModule,
+            serve_static_1.ServeStaticModule.forRoot({
+                rootPath: `${app_root_path_1.path}/uploads`,
+                serveRoot: '/static'
+            }),
         ],
         controllers: [],
         providers: [],

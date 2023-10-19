@@ -10,6 +10,9 @@ export class Room {
 
   @Prop({ required: true })
   description: string;
+
+  @Prop({ default: 'https://i.pinimg.com/originals/15/23/86/152386d3699721e62b78c5fe2960b547.jpg' })
+  image: string;
 }
 
 export const RoomSchema = SchemaFactory.createForClass(Room);
