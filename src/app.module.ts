@@ -8,6 +8,7 @@ import { UserModule } from './user/user.module';
 import { FilesModule } from './files/files.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { path } from 'app-root-path';
+import { TelegramModule } from './telegram/telegram.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { path } from 'app-root-path';
       rootPath: `${path}/uploads`,
       serveRoot: '/static'
     }),
+    TelegramModule,
   ],
   controllers: [],
   providers: [],
