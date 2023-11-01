@@ -15,7 +15,6 @@ import { ScheduleService } from './schedule.service';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
 import { RoomsService } from '../rooms/rooms.service';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
-import { UserService } from 'src/user/user.service';
 import { RolesGuard } from 'src/roles/roles.guard';
 
 @Controller('schedule')
