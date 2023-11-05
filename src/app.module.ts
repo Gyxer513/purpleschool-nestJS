@@ -2,13 +2,14 @@ import { Module } from '@nestjs/common';
 import { ScheduleModule } from './schedule/schedule.module';
 import { RoomsModule } from './rooms/rooms.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { FilesModule } from './files/files.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { path } from 'app-root-path';
 import { TelegramModule } from './telegram/telegram.module';
+import { getTelegramConfig } from './configs/telegram.config';
 
 @Module({
   imports: [
@@ -25,7 +26,11 @@ import { TelegramModule } from './telegram/telegram.module';
       rootPath: `${path}/uploads`,
       serveRoot: '/static'
     }),
-    TelegramModule,
+    TelegramModule.foRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: getTelegramConfig
+    }),
   ],
   controllers: [],
   providers: [],
