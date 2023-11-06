@@ -5,12 +5,14 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Schedule, ScheduleSchema  } from './entities/schedule.entity';
 import { RoomsModule } from '../rooms/rooms.module';
 import { UserModule } from 'src/user/user.module';
+import { TelegramModule } from 'src/telegram/telegram.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Schedule.name, schema: ScheduleSchema }]), 
     RoomsModule,
-    UserModule
+    UserModule,
+    TelegramModule
   ],
   controllers: [ScheduleController],
   providers: [ScheduleService],

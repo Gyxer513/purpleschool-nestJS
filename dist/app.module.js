@@ -17,6 +17,8 @@ const user_module_1 = require("./user/user.module");
 const files_module_1 = require("./files/files.module");
 const serve_static_1 = require("@nestjs/serve-static");
 const app_root_path_1 = require("app-root-path");
+const telegram_module_1 = require("./telegram/telegram.module");
+const telegram_config_1 = require("./configs/telegram.config");
 let AppModule = exports.AppModule = class AppModule {
 };
 exports.AppModule = AppModule = __decorate([
@@ -32,6 +34,11 @@ exports.AppModule = AppModule = __decorate([
             serve_static_1.ServeStaticModule.forRoot({
                 rootPath: `${app_root_path_1.path}/uploads`,
                 serveRoot: '/static'
+            }),
+            telegram_module_1.TelegramModule.foRootAsync({
+                imports: [config_1.ConfigModule],
+                inject: [config_1.ConfigService],
+                useFactory: telegram_config_1.getTelegramConfig
             }),
         ],
         controllers: [],

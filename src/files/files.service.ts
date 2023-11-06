@@ -17,7 +17,7 @@ export class FilesService {
   async saveFile(files: MFile[]): Promise<FileElementResponse[]> {
     const uploadFolder = `${path}`;
     await ensureDir(uploadFolder);
-    const res: FileElementResponse[] = [];
+    const res: FileElementResponse[] = []; 
     for (const file of files) {
       await writeFile(
         `${uploadFolder}/uploads/${file.originalname}`,
